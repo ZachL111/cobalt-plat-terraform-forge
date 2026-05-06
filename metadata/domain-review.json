@@ -1,0 +1,73 @@
+{
+  "repo": "cobalt-plat-terraform-forge",
+  "language": "Java",
+  "category": "Platform engineering",
+  "goal": "Package a Java local lab for terraform analysis with log and snapshot fixtures, replay consistency checks, and documented operating limits.",
+  "review_model": {
+    "terms": [
+      "rollout width",
+      "quota pressure",
+      "route drift",
+      "secret scope"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "rollout width",
+      "signal": 70,
+      "slack": 43,
+      "drag": 18,
+      "confidence": 76,
+      "score": 205,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "quota pressure",
+      "signal": 46,
+      "slack": 45,
+      "drag": 20,
+      "confidence": 52,
+      "score": 129,
+      "lane": "watch"
+    },
+    {
+      "name": "edge",
+      "focus": "route drift",
+      "signal": 72,
+      "slack": 43,
+      "drag": 9,
+      "confidence": 71,
+      "score": 231,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "secret scope",
+      "signal": 62,
+      "slack": 25,
+      "drag": 8,
+      "confidence": 51,
+      "score": 176,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "rollout width",
+      "signal": 63,
+      "slack": 31,
+      "drag": 23,
+      "confidence": 46,
+      "score": 134,
+      "lane": "watch"
+    }
+  ]
+}

@@ -1,68 +1,40 @@
 # cobalt-plat-terraform-forge
 
-`cobalt-plat-terraform-forge` explores platform engineering in Java. The repository keeps the core rule set compact, then surrounds it with examples that show how the decisions move.
+`cobalt-plat-terraform-forge` is a Java project in platform engineering. Its focus is to package a Java local lab for terraform analysis with log and snapshot fixtures, replay consistency checks, and documented operating limits.
 
-## Cobalt Plat Terraform Forge Notes
+## Why It Exists
 
-The quickest review path is the verifier first, then the fixtures, then the operations note. That order makes it easy to see whether the code, data, and explanation still agree.
+The project exists to keep a narrow engineering decision visible and testable. For this repo, that decision is how rollout width and route drift should influence a review result.
 
-## Why This Exists
+## Cobalt Plat Terraform Forge Review Notes
 
-The repository exists to keep a technical idea small enough to reason about. The implementation avoids external dependencies where possible, then uses fixtures to make changes easy to review.
+For a quick review, compare `route drift` with `quota pressure` before reading the middle cases.
 
-## Implementation Notes
+## Features
 
-The design is intentionally direct: parse or construct a signal, score it, classify it, and verify the expected branch. This makes the repository useful for studying platform engineering behavior without needing a service or database unless the language project itself is SQL. The Java implementation uses a compact package layout and direct assertion checks.
+- `fixtures/domain_review.csv` adds cases for rollout width and quota pressure.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/cobalt-plat-terraform-walkthrough.md` walks through the case spread.
+- The Java code includes a review path for `route drift` and `quota pressure`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Example Scenarios
+## Architecture Notes
 
-The extended cases are not random smoke tests. `degraded` keeps pressure on the review path, while `surge` shows the model when capacity and weight are strong enough to clear the threshold.
+The core code exposes a scoring path and the added review layer uses `signal`, `slack`, `drag`, and `confidence`. The domain terms are `rollout width`, `quota pressure`, `route drift`, and `secret scope`.
 
-## Feature Notes
+The added Java path is deliberately direct, with fixtures doing most of the explaining.
 
-- Uses fixture data to keep route policy changes visible in code review.
-- Includes extended examples for rollout constraints, including `surge` and `degraded`.
-- Documents environment checks tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-
-## Local Setup
-
-The only required setup is the local Java toolchain. After cloning, stay in the repo root so fixture paths resolve correctly.
-
-## Tests
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
-
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Code Tour
-
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Boundaries
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
-
-## Roadmap
-
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add one more platform engineering fixture that focuses on a malformed or borderline input.
-
-## Try It
+## Usage
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Tests
+
+The check exercises the source code and the review fixture. `edge` is the high score at 231; `stress` is the low score at 129.
+
+## Limitations And Roadmap
+
+The repository is intentionally scoped to local checks. I would expand it by adding adversarial fixtures before adding features.
