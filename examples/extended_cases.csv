@@ -1,0 +1,7 @@
+name,demand,capacity,latency,risk,weight,score,decision,reason
+baseline,67,83,14,12,7,91,review,platform engineering baseline scenario exercises the review path for bounded failure handling
+pressure,82,73,29,23,8,-24,review,platform engineering pressure scenario exercises the review path for bounded failure handling
+surge,107,94,21,12,13,166,review,platform engineering surge scenario exercises the review path for bounded failure handling
+degraded,64,59,34,24,5,-107,review,platform engineering degraded scenario exercises the review path for bounded failure handling
+recovery,86,102,16,13,12,143,review,platform engineering recovery scenario exercises the review path for bounded failure handling
+boundary,78,83,23,14,9,67,review,platform engineering boundary scenario exercises the review path for bounded failure handling
